@@ -13,13 +13,23 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.fuicuiedu.idedemo.videonews.R;
+import com.fuicuiedu.idedemo.videonews.bombapi.BombClient;
+import com.fuicuiedu.idedemo.videonews.bombapi.UserApi;
+import com.fuicuiedu.idedemo.videonews.bombapi.result.ErrorResult;
+import com.fuicuiedu.idedemo.videonews.bombapi.result.UserResult;
 import com.fuicuiedu.idedemo.videonews.commons.ToastUtils;
+import com.google.gson.Gson;
 
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by gqq on 2016/12/7.
@@ -48,7 +58,7 @@ public class LoginFragment extends DialogFragment {
 
     @OnClick(R.id.btnLogin)
     public void onClick() {
-        String username = mEtUsername.getText().toString();
+        final String username = mEtUsername.getText().toString();
         String password = mEtPassword.getText().toString();
         //用户名密码能不为空
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
@@ -57,8 +67,39 @@ public class LoginFragment extends DialogFragment {
         }
         //显示进度条
         mBtnLogin.setVisibility(View.GONE);
-        // TODO: 2016/12/7 执行登录的网络请求
 
+        //登录Api
+        UserApi userApi = BombClient.getInstance().getUserApi();
+        Call<UserResult> call = userApi.login(username,password);
+        call.enqueue(new Callback<UserResult>() {
+            @Override
+            public void onResponse(Call<UserResult> call, Response<UserResult> response) {
+                //隐藏圈圈
+                mBtnLogin.setVisibility(View.VISIBLE);
+                //登录未成功
+                if (!response.isSuccessful()){
+                    try {
+                        String error = response.errorBody().string();
+                        ErrorResult errorResult = new Gson().fromJson(error,ErrorResult.class);
+                        ToastUtils.showShort(errorResult.getError());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return;
+                }
+                //登陆成功
+                UserResult result = response.body();
+                listener.loginSuccess(username,result.getObjectId());
+                ToastUtils.showShort(R.string.login_success);
+            }
+
+            @Override
+            public void onFailure(Call<UserResult> call, Throwable t) {
+                //隐藏圈圈
+                mBtnLogin.setVisibility(View.VISIBLE);
+                ToastUtils.showShort(t.getMessage());
+            }
+        });
     }
 
     @Override
@@ -66,7 +107,6 @@ public class LoginFragment extends DialogFragment {
         super.onDestroy();
         mUnbinder.unbind();
     }
-
 
     //当登录成功之后触发的方法
     public interface OnLoginSuccessListener {

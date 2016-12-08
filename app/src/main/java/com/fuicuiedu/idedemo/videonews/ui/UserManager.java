@@ -2,7 +2,6 @@ package com.fuicuiedu.idedemo.videonews.ui;
 
 /**
  * 很简单的用户管理类。
- * TODO: 使用SharedPreferences来存储用户登录信息，从而可以自动登录
  */
 public class UserManager {
 
@@ -38,7 +37,6 @@ public class UserManager {
 
     public boolean isOffline(){
         return username == null || objectId == null;
-
     }
 
     public void clear(){

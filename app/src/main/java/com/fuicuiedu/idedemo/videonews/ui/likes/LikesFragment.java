@@ -17,7 +17,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Created by Administrator on 2016/12/6 0006.
+ * 我的收藏页面
+ * 上部：个人信息，登陆注册
+ * 下部：收藏列表
  */
 
 public class LikesFragment extends Fragment implements
@@ -45,7 +47,12 @@ public class LikesFragment extends Fragment implements
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_likes, container, false);
             ButterKnife.bind(this, view);
-            // TODO: 2016/12/7 判断用户登录状态，更新UI
+            //判断用户登录状态，更新UI
+            UserManager userManager = UserManager.getInstance();
+            if (!userManager.isOffline()){
+                userOnLine(userManager.getUsername(),userManager.getObjectId());
+            }
+
         }
         return view;
     }
