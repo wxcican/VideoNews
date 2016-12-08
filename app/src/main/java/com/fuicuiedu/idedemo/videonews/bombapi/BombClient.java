@@ -1,14 +1,9 @@
 package com.fuicuiedu.idedemo.videonews.bombapi;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import okhttp3.Call;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Administrator on 2016/12/8 0008.
@@ -25,6 +20,8 @@ public class BombClient {
     }
 
     private OkHttpClient okHttpClient;
+    private Retrofit retrofit;
+    private UserApi userApi;
 
     private BombClient(){
         //日志拦截器
@@ -36,26 +33,25 @@ public class BombClient {
                 .addInterceptor(new BombInterceptor())//添加Bomb需要的请求头的拦截器
                 .addInterceptor(httpLoggingInterceptor)//日志拦截器
                 .build();
-    }
 
-    //注册
-    public Call register(String username, String password){
-        JSONObject object = new JSONObject();
-        try {
-            object.put("username",username);
-            object.put("password",password);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        RequestBody requestBody = RequestBody.create(null,object.toString());
-
-        Request request = new Request.Builder()
-                .url(" https://api.bmob.cn/1/users")
-                .post(requestBody)
+        //构建Retrofit
+        retrofit = new Retrofit.Builder()
+                .client(okHttpClient)
+                // bomb服务器baseurl
+                .baseUrl("https://api.bmob.cn/")
+                // Gson转换器
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
-
-        //返回一个Call模型
-        return okHttpClient.newCall(request);
     }
+
+    //拿到UserApi
+    public UserApi getUserApi(){
+        if (userApi == null){
+            userApi = retrofit.create(UserApi.class);
+        }
+        return userApi;
+    }
+
+
+
 }

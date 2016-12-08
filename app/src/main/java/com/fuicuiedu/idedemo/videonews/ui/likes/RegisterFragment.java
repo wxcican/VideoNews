@@ -13,12 +13,23 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.fuicuiedu.idedemo.videonews.R;
+import com.fuicuiedu.idedemo.videonews.bombapi.BombClient;
+import com.fuicuiedu.idedemo.videonews.bombapi.UserApi;
+import com.fuicuiedu.idedemo.videonews.bombapi.entity.UserEntity;
+import com.fuicuiedu.idedemo.videonews.bombapi.result.ErrorResult;
+import com.fuicuiedu.idedemo.videonews.bombapi.result.UserResult;
 import com.fuicuiedu.idedemo.videonews.commons.ToastUtils;
+import com.google.gson.Gson;
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by gqq on 2016/12/7.
@@ -47,7 +58,7 @@ public class RegisterFragment extends DialogFragment {
 
     @OnClick(R.id.btnRegister)
     public void onClick() {
-        String username = mEtUsername.getText().toString();
+        final String username = mEtUsername.getText().toString();
         String password = mEtPassword.getText().toString();
         //用户名密码不能为空
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
@@ -56,7 +67,48 @@ public class RegisterFragment extends DialogFragment {
         }
         //显示进度条
         mBtnRegister.setVisibility(View.GONE);
-        // TODO: 2016/12/7 执行注册的网络请求
+
+        //注册Api
+        UserApi userApi = BombClient.getInstance().getUserApi();
+        //构建用户实体类
+        UserEntity userEntity = new UserEntity(username,password);
+        //拿到call模型
+        Call<UserResult> call = userApi.register(userEntity);
+        //执行网络请求
+        call.enqueue(new Callback<UserResult>() {
+            @Override
+            public void onResponse(Call<UserResult> call, Response<UserResult> response) {
+                //隐藏加载圈圈
+                mBtnRegister.setVisibility(View.VISIBLE);
+                //注册失败
+                if (!response.isSuccessful()){
+                    try {
+                        //拿到失败的json
+                        String error = response.errorBody().string();
+                        //通过gson拿到失败的结果实体类
+                        ErrorResult errorResult = new Gson().fromJson(error,ErrorResult.class);
+                        //提示注册失败
+                        ToastUtils.showShort(errorResult.getError());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return;
+                }
+                //注册成功
+                UserResult userResult = response.body();
+                listener.registerSuccess(username,userResult.getObjectId());
+                //提示注册成功
+                ToastUtils.showShort(R.string.register_success);
+            }
+
+            @Override
+            public void onFailure(Call<UserResult> call, Throwable t) {
+                //隐藏圈圈
+                mBtnRegister.setVisibility(View.VISIBLE);
+                //提示失败原因
+                ToastUtils.showShort(t.getMessage());
+            }
+        });
     }
 
     @Override
