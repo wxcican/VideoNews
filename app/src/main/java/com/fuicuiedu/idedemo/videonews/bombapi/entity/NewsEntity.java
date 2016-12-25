@@ -1,11 +1,12 @@
 package com.fuicuiedu.idedemo.videonews.bombapi.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 新闻的实体类
  */
-public class NewsEntity {
+public class NewsEntity implements Serializable{
 
     private String objectId;//新闻id
     private String newsTitle; // 新闻标题

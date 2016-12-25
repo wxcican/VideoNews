@@ -24,8 +24,12 @@ public class BombClient {
 
     private OkHttpClient okHttpClient;
     private Retrofit retrofit;
+    // 用于请求新的服务器地址
+    private Retrofit retrofit_cloud;
     private UserApi userApi;
     private NewsApi newsApi;
+    // 用于构建新的服务器请求
+    private NewsApi newsApi_cloud;
 
     private BombClient(){
         //日志拦截器
@@ -48,6 +52,13 @@ public class BombClient {
                 // Gson转换器
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
+
+        //构建retrofit_cloud
+        retrofit_cloud = new Retrofit.Builder()
+                .client(okHttpClient)
+                .baseUrl("http://cloud.bmob.cn/")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
     }
 
     //拿到UserApi
@@ -63,6 +74,13 @@ public class BombClient {
             newsApi = retrofit.create(NewsApi.class);
         }
         return newsApi;
+    }
+
+    public NewsApi getNewsApi_cloud(){
+        if (newsApi_cloud == null){
+            newsApi_cloud = retrofit_cloud.create(NewsApi.class);
+        }
+        return newsApi_cloud;
     }
 
 

@@ -35,6 +35,7 @@ public class NewsListView extends BaseResourceView<NewsEntity, NewsItemView> {
         return 5;
     }
 
+
     @Override
     protected NewsItemView createItemView() {
         return new NewsItemView(getContext());

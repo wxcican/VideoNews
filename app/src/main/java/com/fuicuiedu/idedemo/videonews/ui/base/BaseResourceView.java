@@ -91,7 +91,7 @@ public abstract class BaseResourceView<Model, ItemView extends BaseItemView<Mode
         Mugen.with(recyclerView, this).start();
     }
 
-    // 提供自动刷新的方法
+    // zigo
     public void autoRefresh() {
         refreshLayout.setRefreshing(true);
         onRefresh();
@@ -170,7 +170,7 @@ public abstract class BaseResourceView<Model, ItemView extends BaseItemView<Mode
     }
     //--------------------------上拉加载时会触发的方法---------------------
 
-    // TODO: 2016/12/23 0023  从服务器查询数据
+    //从服务器查询数据
     protected abstract Call<QueryResult<Model>> queryData(int limit, int skip);
 
     //每页从服务器获取多少条数据
@@ -196,6 +196,10 @@ public abstract class BaseResourceView<Model, ItemView extends BaseItemView<Mode
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             ItemView itemView = createItemView();
+            itemView.setLayoutParams(new RecyclerView.LayoutParams(
+                    RecyclerView.LayoutParams.MATCH_PARENT,
+                    RecyclerView.LayoutParams.WRAP_CONTENT
+            ));
             return new RecyclerView.ViewHolder(itemView) {
             };
         }
