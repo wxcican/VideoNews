@@ -2,12 +2,16 @@ package com.fuicuiedu.idedemo.videonews.bombapi;
 
 import com.fuicuiedu.idedemo.videonews.bombapi.entity.CommentsEntity;
 import com.fuicuiedu.idedemo.videonews.bombapi.entity.NewsEntity;
+import com.fuicuiedu.idedemo.videonews.bombapi.entity.PublishEntity;
 import com.fuicuiedu.idedemo.videonews.bombapi.other.InQuery;
 import com.fuicuiedu.idedemo.videonews.bombapi.result.CollectResult;
+import com.fuicuiedu.idedemo.videonews.bombapi.result.CreateResult;
 import com.fuicuiedu.idedemo.videonews.bombapi.result.QueryResult;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 /**
@@ -33,4 +37,8 @@ public interface NewsApi {
 //  取消收藏新闻
     @GET("http://cloud.bmob.cn/bef74a37a08d3205/changeLike?action=dislike")
     Call<CollectResult> unCollectNews(@Query("newsId") String newsId,@Query("userId") String userId);
+
+    /** 发表评论*/
+    @POST("1/classes/Comments")
+    Call<CreateResult> postComments(@Body PublishEntity publishEntity);
 }

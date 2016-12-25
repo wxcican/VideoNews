@@ -25,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CommentsActivity extends AppCompatActivity {
+public class CommentsActivity extends AppCompatActivity implements EditCommentFragment.OnCommentSuccessListener{
     private static final String KEY_NEWS = "KEY_NEWS";
 
     // 对外公开一个跳转方法
@@ -36,6 +36,7 @@ public class CommentsActivity extends AppCompatActivity {
     }
 
     private NewsEntity newsEntity;
+    private EditCommentFragment editCommentFragment;
 
     @BindView(R.id.tvTitle)
     TextView tvTitle;
@@ -113,7 +114,14 @@ public class CommentsActivity extends AppCompatActivity {
             call.enqueue(callback);
         }
         // 评论
-        
+        if (item.getItemId() == R.id.menu_item_comment) {
+            if (editCommentFragment == null) {
+                String newsId = newsEntity.getObjectId();
+                editCommentFragment = EditCommentFragment.getInstance(newsId);
+                editCommentFragment.setListener(this);
+            }
+            editCommentFragment.show(getSupportFragmentManager(),"Edit Comment");
+        }
         return super.onOptionsItemSelected(item);
     }
     // #############  actionbar相关 end ############################
@@ -135,5 +143,10 @@ public class CommentsActivity extends AppCompatActivity {
         }
     };
 
-
+    @Override
+    public void onCommentSuccess() {
+        editCommentFragment.dismiss();
+        // 刷新视图，获取最新评论
+        commentsListView.autoRefresh();
+    }
 }
