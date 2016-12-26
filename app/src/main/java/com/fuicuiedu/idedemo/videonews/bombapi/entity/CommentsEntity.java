@@ -3,36 +3,32 @@ package com.fuicuiedu.idedemo.videonews.bombapi.entity;
 import java.util.Date;
 
 /**
- * Created by Damon on 2016/12/25.
+ * Created by Administrator on 2016/12/26 0026.
  */
 
-//"author": { // 评论作者
-//        "objectId": "D5vlAAAJ",
-//        "username": "用户名"
-//        "createdAt": "2016-07-11 12:20:45",
-//        "updatedAt": "2016-07-11 12:20:47",
+//{
+//        "author": {
+//        "__type": "Pointer",
+//        "className": "_User",
+//        "objectId": "79e992125d"
 //        },
-//        "content": "评论内容",
-//        "createdAt": "2016-07-11 12:22:03",
-//        "objectId": "ioqs000W",
-//        "updatedAt": "2016-07-11 12:23:10"
-
+//        "content": "吃葡萄不吐葡萄皮",
+//        "createdAt": "2016-07-18 15:29:04",
+//        "news": {
+//        "__type": "Pointer",
+//        "className": "News",
+//        "objectId": "IPPmF99F"
+//        },
+//        "objectId": "26ec97caa4",
+//        "updatedAt": "2016-07-18 15:29:04"
+//        }
 
 public class CommentsEntity {
 
-    private AuthorEntity author;
-    private String content;
-    private Date  createdAt;
     private String objectId;
-    private Date updatedAt;
-
-    public AuthorEntity getAuthor() {
-        return author;
-    }
-
-    public String getContent() {
-        return content;
-    }
+    private String content;
+    private AuthorEntity author;
+    private Date createdAt;
 
     public Date getCreatedAt() {
         return createdAt;
@@ -42,7 +38,11 @@ public class CommentsEntity {
         return objectId;
     }
 
-    public Date getUpdatedAt() {
-        return updatedAt;
+    public String getContent() {
+        return content;
+    }
+
+    public AuthorEntity getAuthor() {
+        return author;
     }
 }

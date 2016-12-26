@@ -1,22 +1,26 @@
 package com.fuicuiedu.idedemo.videonews.bombapi.entity;
 
-import java.util.Date;
+import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by Damon on 2016/12/25.
+ * Created by Administrator on 2016/12/26 0026.
  */
 
-//"objectId": "D5vlAAAJ",
-////        "username": "用户名"
-////        "createdAt": "2016-07-11 12:20:45",
-////        "updatedAt": "2016-07-11 12:20:47",
+//"__type": "Pointer",
+//         "objectId":用户id,
+//         "username":用户名称,
 
 public class AuthorEntity {
 
+    @SerializedName("__type")
+    private String type;
     private String objectId;
     private String username;
-    private Date createdAt;
-    private Date updatedAt;
+
+
+    public String getType() {
+        return type;
+    }
 
     public String getObjectId() {
         return objectId;
@@ -24,13 +28,5 @@ public class AuthorEntity {
 
     public String getUsername() {
         return username;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
     }
 }

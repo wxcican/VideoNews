@@ -6,9 +6,12 @@ import android.widget.TextView;
 
 
 import com.fuicuiedu.idedemo.videonews.R;
+import com.fuicuiedu.idedemo.videonews.bombapi.entity.AuthorEntity;
 import com.fuicuiedu.idedemo.videonews.bombapi.entity.CommentsEntity;
 import com.fuicuiedu.idedemo.videonews.commons.CommonUtils;
 import com.fuicuiedu.idedemo.videonews.ui.base.BaseItemView;
+
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,8 +39,13 @@ public class CommentsItemView extends BaseItemView<CommentsEntity> {
 
     @Override
     protected void bindModel(CommentsEntity commentsEntity) {
-        tvContent.setText(commentsEntity.getContent());
-        tvAuthor.setText(commentsEntity.getAuthor().getUsername());
-        tvCreatedAt.setText(CommonUtils.format(commentsEntity.getCreatedAt()));
+        //数据绑定
+        String content = commentsEntity.getContent();//评论内容
+        Date createdAt = commentsEntity.getCreatedAt();// 评论时间
+        AuthorEntity authorEntity = commentsEntity.getAuthor();
+        String username = authorEntity.getUsername(); // 评论作者
+        tvContent.setText(content);
+        tvAuthor.setText(username);
+        tvCreatedAt.setText(CommonUtils.format(createdAt));
     }
 }

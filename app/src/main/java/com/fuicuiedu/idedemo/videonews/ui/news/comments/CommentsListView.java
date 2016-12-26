@@ -16,8 +16,6 @@ import retrofit2.Call;
 /**
  * 新闻评论列表视图
  *
- * 作者：yuanchao on 2016/8/18 0018 16:07
- * 邮箱：yuanchao@feicuiedu.com
  */
 public class CommentsListView extends BaseResourceView<CommentsEntity, CommentsItemView> {
     public CommentsListView(Context context) {

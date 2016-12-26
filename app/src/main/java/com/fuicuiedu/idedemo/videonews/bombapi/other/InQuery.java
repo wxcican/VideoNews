@@ -1,14 +1,21 @@
 package com.fuicuiedu.idedemo.videonews.bombapi.other;
 
-/**
- * 作者：yuanchao on 2016/8/18 0018 11:42
- * 邮箱：yuanchao@feicuiedu.com
- */
+//// URL编码参数
+//'where= {
+//       "查询字段": {
+//          "$inQuery": {
+//                 "where": {
+//                      "objectId": 用户名id
+//                      },
+//                      "className": "表名"
+//                  }
+//          }
+//        }'
 public class InQuery {
 
-    private final String field;
-    private final String className;
-    private final String objectId;
+    private String field;//查询字段
+    private String className;//表名
+    private String objectId;//用户id
 
     public InQuery(String field, String className, String objectId) {
         this.field = field;
@@ -16,22 +23,22 @@ public class InQuery {
         this.objectId = objectId;
     }
 
-    // 查询当前表的news字段
-    //    where = {
-    //      "news": {
-    //        "$inQuery": {
-    //            "className": "News"
-    //            "where": {
-    //                "objectId": 新闻Id
-    //            },
-    //      }
-//        }
-//    }
-    final String LIKES_IN_QUERY =
-            "{ \"%s\": { \"$inQuery\": {\"where\": {\"objectId\":\"%s\"}, \"className\": \"%s\"}}}";
+    //    {
+//       "查询字段": {
+//          "$inQuery": {
+//                 "where": {
+//                      "objectId": 用户id
+//                      },
+//                      "className": "表名"
+//                  }
+//          }
+//        }'
+
+    final String LIKE_IN_QUERY =
+            "{\"%s\" : { \"$inQuery\": {\"where\" :{\"objectId\":\"%s\" },\"className\" : \"%s\"}}}";
 
     @Override
     public String toString() {
-        return String.format(LIKES_IN_QUERY, field, objectId, className);
+        return String.format(LIKE_IN_QUERY,field,objectId,className);
     }
 }

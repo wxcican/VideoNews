@@ -15,7 +15,6 @@ import android.widget.EditText;
 import com.fuicuiedu.idedemo.videonews.R;
 import com.fuicuiedu.idedemo.videonews.bombapi.BombClient;
 import com.fuicuiedu.idedemo.videonews.bombapi.NewsApi;
-import com.fuicuiedu.idedemo.videonews.bombapi.entity.CommentsEntity;
 import com.fuicuiedu.idedemo.videonews.bombapi.entity.PublishEntity;
 import com.fuicuiedu.idedemo.videonews.bombapi.result.CreateResult;
 import com.fuicuiedu.idedemo.videonews.commons.ToastUtils;
