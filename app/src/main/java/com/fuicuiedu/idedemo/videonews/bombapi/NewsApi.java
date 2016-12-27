@@ -41,4 +41,12 @@ public interface NewsApi {
     /** 发表评论*/
     @POST("1/classes/Comments")
     Call<CreateResult> postComments(@Body PublishEntity publishEntity);
+
+    /** 获取收藏列表*/
+    @GET("1/classes/News?order=-createdAt")
+    Call<QueryResult<NewsEntity>> getLikedList(
+            @Query("limit") int limit,
+            @Query("skip") int skip,
+            @Query("where") InQuery where
+    );
 }

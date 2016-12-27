@@ -36,6 +36,8 @@ public class LikesFragment extends Fragment implements
     Button mBtnLogin;
     @BindView(R.id.btnLogout)
     Button mBtnLogout;
+    @BindView(R.id.likesListView)
+    LikesListView likesListView;//收藏列表
     private View view;
 
     private LoginFragment mLoginFragment;
@@ -52,7 +54,6 @@ public class LikesFragment extends Fragment implements
             if (!userManager.isOffline()){
                 userOnLine(userManager.getUsername(),userManager.getObjectId());
             }
-
         }
         return view;
     }
@@ -109,7 +110,8 @@ public class LikesFragment extends Fragment implements
         mBtnRegister.setVisibility(View.VISIBLE);
         mDivider.setVisibility(View.VISIBLE);
         mTvUsername.setText(R.string.tourist);
-        /// TODO: 2016/12/7  清空收藏列表(adapter上的内容clear了)
+        //清空收藏列表(adapter上的内容clear了)
+        likesListView.clear();
     }
     
     //用户上线
@@ -123,6 +125,7 @@ public class LikesFragment extends Fragment implements
         mBtnRegister.setVisibility(View.INVISIBLE);
         mDivider.setVisibility(View.INVISIBLE);
         mTvUsername.setText(username);
-        // TODO: 2016/12/7  刷新收藏列表
+        //刷新收藏列表
+        likesListView.autoRefresh();
     }
 }
