@@ -17,8 +17,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.R.string.cancel;
-
 /**
  * 我的收藏列表视图
  */
