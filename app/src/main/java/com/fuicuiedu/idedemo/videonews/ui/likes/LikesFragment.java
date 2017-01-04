@@ -54,6 +54,8 @@ public class LikesFragment extends Fragment implements
             if (!userManager.isOffline()){
                 userOnLine(userManager.getUsername(),userManager.getObjectId());
             }
+            //将FragmentManager传递给收藏列表
+            likesListView.setFragmentManager(getFragmentManager());
         }
         return view;
     }

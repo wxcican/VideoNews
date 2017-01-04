@@ -1,6 +1,8 @@
 package com.fuicuiedu.idedemo.videonews.ui.likes;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.AttributeSet;
 
 import com.fuicuiedu.idedemo.videonews.bombapi.BombClient;
@@ -22,6 +24,10 @@ import retrofit2.Response;
  */
 
 public class LikesListView extends BaseResourceView<NewsEntity, LikesItemView> {
+
+    private UnCollectFragment unCollectFragment;
+    private FragmentManager fragmentManager;
+
     public LikesListView(Context context) {
         super(context);
     }
@@ -53,7 +59,10 @@ public class LikesListView extends BaseResourceView<NewsEntity, LikesItemView> {
         likesItemView.setOnItemLongClickListener(new LikesItemView.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(String newsId, String userId) {
-                cancel(newsId, userId);
+                //因为每次新闻Id不同，要根据新闻ID来取消收藏，所以每次new一个新的
+                unCollectFragment = new UnCollectFragment(newsId, userId);
+                unCollectFragment.setListener(onUnCollectSuccessListener);
+                unCollectFragment.show(fragmentManager, "unCollectFragment");
             }
         });
         return likesItemView;
@@ -64,29 +73,17 @@ public class LikesListView extends BaseResourceView<NewsEntity, LikesItemView> {
         adapter.clear();
     }
 
-    //给itemView设置长按监听
-    private void cancel(String newsId, String userId) {
-        Call<CollectResult> call = BombClient.getInstance().getNewsApi().unCollectNews(
-                newsId,
-                userId);
-        call.enqueue(new Callback<CollectResult>() {
-            @Override
-            public void onResponse(Call<CollectResult> call, Response<CollectResult> response) {
-                CollectResult collectResult = response.body();
-                if (collectResult.isSuccess()) {
-                    ToastUtils.showShort("取消收藏成功");
-                    autoRefresh();
-                } else {
-                    ToastUtils.showShort("取消收藏失败：" + collectResult.getError());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CollectResult> call, Throwable t) {
-                ToastUtils.showShort(t.getMessage());
-            }
-        });
+    //设置fragmentManager
+    public void setFragmentManager(FragmentManager fragmentManager) {
+        this.fragmentManager = fragmentManager;
     }
 
-
+    //取消收藏的对话框要实现的回调方法
+    private UnCollectFragment.OnUnCollectSuccessListener onUnCollectSuccessListener = new UnCollectFragment.OnUnCollectSuccessListener() {
+        @Override
+        public void UnCollectSuccess() {
+            //取消收藏成功后，自动刷新收藏列表
+            autoRefresh();
+        }
+    };
 }

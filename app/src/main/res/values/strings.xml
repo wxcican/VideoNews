@@ -33,10 +33,12 @@
 
     <string name="like_success">收藏成功</string>
     <string name="like_failure">收藏失败</string>
+    <string name="is_un_collect">确定要取消收藏本条新闻?</string>
 
     <string name="logout">退出登录</string>
 
     <string name="OK">确定</string>
+    <string name="NO">取消</string>
 
     <string name="please_edit_comment">请编辑评论</string>
 </resources>
